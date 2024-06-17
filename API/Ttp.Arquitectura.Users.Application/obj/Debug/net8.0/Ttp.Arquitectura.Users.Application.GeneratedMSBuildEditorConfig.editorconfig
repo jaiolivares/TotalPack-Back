@@ -8,6 +8,6 @@ build_property.PlatformNeutralAssembly =
 build_property.EnforceExtendedAnalyzerRules = 
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = Ttp.Arquitectura.Users.Application
-build_property.ProjectDir = C:\Users\Carlos Santibanez\Desktop\Arquitectura\Prueba Tecnica\API\Ttp.Arquitectura.Users.Application\
+build_property.ProjectDir = C:\0000-TestTecnico\TotalPack-Back\API\Ttp.Arquitectura.Users.Application\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
