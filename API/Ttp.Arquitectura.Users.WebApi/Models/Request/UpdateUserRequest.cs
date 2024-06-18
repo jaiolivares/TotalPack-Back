@@ -1,10 +1,9 @@
-﻿namespace Ttp.Arquitectura.Users.Domain
+﻿namespace Ttp.Arquitectura.Users.WebApi.Models.Request
 {
-    public class User
+    public class UpdateUserRequest
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         public string FullName { get; set; }
-
         public DateTime Birth { get; set; }
         public string Email { get; set; }
     }

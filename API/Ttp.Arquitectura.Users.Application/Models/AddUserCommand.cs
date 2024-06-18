@@ -1,10 +1,8 @@
-﻿namespace Ttp.Arquitectura.Users.Domain
+﻿namespace Ttp.Arquitectura.Users.Application.Models
 {
-    public class User
+    public class AddUserCommand
     {
-        public Guid Id { get; set; } = Guid.NewGuid();
         public string FullName { get; set; }
-
         public DateTime Birth { get; set; }
         public string Email { get; set; }
     }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Ttp.Arquitectura.Users.Application.Commands;
+using Ttp.Arquitectura.Users.Application.Models;
 using Ttp.Arquitectura.Users.Application.Queries;
 using Ttp.Arquitectura.Users.WebApi.Models.Helpers;
 using Ttp.Arquitectura.Users.WebApi.Models.Request;
@@ -11,11 +12,25 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController(IOptions<AppSettings> appSettings, AddUserHandler addUserHandler, GetUsersHandler getUsersHandler) : ControllerBase
+    public class UserController(IOptions<AppSettings> appSettings, AddUserHandler addUserHandler, GetUsersHandler getUsersHandler, DeleteUserHandler deleteUserHandler, UpdateUserHandler updateUserHandler) : ControllerBase
     {
         private readonly AppSettings _appSettings = appSettings.Value;
         private readonly AddUserHandler _addUserHandler = addUserHandler;
         private readonly GetUsersHandler _getUsersHandler = getUsersHandler;
+        private readonly DeleteUserHandler _deleteUserHandler = deleteUserHandler;
+        private readonly UpdateUserHandler _updateUserHandler = updateUserHandler;
+
+        //TODO: VALIDACIONES= 204, 500, 400
+        //TODO: VALIDACIONES= buscar usuario antes de eliminar o editar
+        //TOOD: VALIDACIONES= no ingresar usuarios repetidos
+
+        [HttpPost]
+        public IActionResult Post([FromBody] AddUserRequest request)
+        {
+            var command = request.Adapt<AddUserCommand>();
+            _addUserHandler.Handle(command);
+            return Ok();
+        }
 
         [HttpGet]
         public IActionResult Get()
@@ -41,11 +56,18 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
             return Ok(response);
         }
 
-        [HttpPost]
-        public IActionResult Post([FromBody] AddUserRequest request)
+        [HttpPut]
+        public IActionResult Put(UpdateUserRequest request)
         {
-            var command = request.Adapt<AddUserCommand>();
-            _addUserHandler.Handle(command);
+            var command = request.Adapt<UpdateUserCommand>();
+            _updateUserHandler.Handle(command);
+            return Ok();
+        }
+
+        [HttpDelete]
+        public IActionResult Delete(Guid id)
+        {
+            _deleteUserHandler.Handle(id);
             return Ok();
         }
     }

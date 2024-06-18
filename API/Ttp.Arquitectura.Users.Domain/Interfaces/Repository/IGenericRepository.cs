@@ -4,9 +4,7 @@ namespace Ttp.Arquitectura.Users.Domain.Interfaces.Repository
 {
     public interface IGenericRepository<TEntity>
     {
-        void Delete(object id);
-
-        void Delete(TEntity entityToDelete);
+        void Insert(TEntity entity);
 
         IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "");
 
@@ -14,9 +12,11 @@ namespace Ttp.Arquitectura.Users.Domain.Interfaces.Repository
 
         TEntity GetByID(Guid id);
 
-        void Insert(TEntity entity);
-
         void Update(TEntity entityToUpdate);
+
+        void Delete(Guid id);
+
+        void Delete(TEntity entityToDelete);
 
         void Save();
     }

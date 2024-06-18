@@ -18,6 +18,8 @@ options.UseSqlServer(builder.Configuration.GetConnectionString("users-db") ?? th
 builder.Services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
 builder.Services.AddScoped<AddUserHandler>();
 builder.Services.AddScoped<GetUsersHandler>();
+builder.Services.AddScoped<UpdateUserHandler>();
+builder.Services.AddScoped<DeleteUserHandler>();
 
 IConfigurationSection appSettingsSection = builder.Configuration.GetSection("AppSettings");
 AppSettings appSettings = appSettingsSection.Get<AppSettings>();

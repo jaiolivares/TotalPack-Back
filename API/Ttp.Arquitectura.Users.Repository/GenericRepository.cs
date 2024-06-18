@@ -15,6 +15,11 @@ namespace Ttp.Arquitectura.Users.Repository
             this.dbSet = context.Set<TEntity>();
         }
 
+        public virtual void Insert(TEntity entity)
+        {
+            dbSet.Add(entity);
+        }
+
         public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = dbSet;
@@ -70,12 +75,13 @@ namespace Ttp.Arquitectura.Users.Repository
             return dbSet.Find(id);
         }
 
-        public virtual void Insert(TEntity entity)
+        public virtual void Update(TEntity entityToUpdate)
         {
-            dbSet.Add(entity);
+            dbSet.Attach(entityToUpdate);
+            context.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
-        public virtual void Delete(object id)
+        public virtual void Delete(Guid id)
         {
             TEntity entityToDelete = dbSet.Find(id);
             Delete(entityToDelete);
@@ -88,12 +94,6 @@ namespace Ttp.Arquitectura.Users.Repository
                 dbSet.Attach(entityToDelete);
             }
             dbSet.Remove(entityToDelete);
-        }
-
-        public virtual void Update(TEntity entityToUpdate)
-        {
-            dbSet.Attach(entityToUpdate);
-            context.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
         public void Save()

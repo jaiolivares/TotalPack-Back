@@ -5,19 +5,19 @@ using Ttp.Arquitectura.Users.Domain.Interfaces.Repository;
 
 namespace Ttp.Arquitectura.Users.Application.Commands
 {
-    public class AddUserHandler
+    public class UpdateUserHandler
     {
         private readonly IGenericRepository<User> _userRepository;
 
-        public AddUserHandler(IGenericRepository<User> userRepository)
+        public UpdateUserHandler(IGenericRepository<User> userRepository)
         {
             _userRepository = userRepository;
         }
 
-        public void Handle(AddUserCommand command)
+        public void Handle(UpdateUserCommand command)
         {
             var user = command.Adapt<User>();
-            _userRepository.Insert(user);
+            _userRepository.Update(user);
             _userRepository.Save();
         }
     }
