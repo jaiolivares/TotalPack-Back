@@ -21,6 +21,11 @@ builder.Services.AddScoped<GetUsersHandler>();
 builder.Services.AddScoped<UpdateUserHandler>();
 builder.Services.AddScoped<DeleteUserHandler>();
 
+builder.Services.AddScoped<IGenericRepository<Adress>, GenericRepository<Adress>>();
+builder.Services.AddScoped<AddAdressHandler>();
+builder.Services.AddScoped<GetAdressesHandler>();
+builder.Services.AddScoped<UpdateAdressHandler>();
+
 IConfigurationSection appSettingsSection = builder.Configuration.GetSection("AppSettings");
 AppSettings appSettings = appSettingsSection.Get<AppSettings>();
 builder.Services.Configure<AppSettings>(appSettingsSection);

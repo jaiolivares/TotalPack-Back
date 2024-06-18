@@ -12,6 +12,8 @@ namespace Ttp.Arquitectura.Users.Domain.Interfaces.Repository
 
         TEntity GetByID(Guid id);
 
+        TEntity GetByID(int id);
+
         void Update(TEntity entityToUpdate);
 
         void Delete(Guid id);

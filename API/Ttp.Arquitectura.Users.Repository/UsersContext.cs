@@ -7,15 +7,9 @@ namespace Ttp.Arquitectura.Users.Repository
     {
         public UsersContext(DbContextOptions<UsersContext> options) : base(options)
         {
-
         }
 
         public DbSet<User> Users { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
-        }
+        public DbSet<Adress> Adresses { get; set; }
     }
-
 }

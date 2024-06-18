@@ -75,6 +75,11 @@ namespace Ttp.Arquitectura.Users.Repository
             return dbSet.Find(id);
         }
 
+        public virtual TEntity GetByID(int id)
+        {
+            return dbSet.Find(id);
+        }
+
         public virtual void Update(TEntity entityToUpdate)
         {
             dbSet.Attach(entityToUpdate);
