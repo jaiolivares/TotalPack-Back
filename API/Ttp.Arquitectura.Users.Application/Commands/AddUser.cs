@@ -11,14 +11,20 @@ namespace Ttp.Arquitectura.Users.Application.Commands
         public string Email { get; set; }
     }
 
-    public class AddUserHandler(IGenericRepository<User> user)
+    public class AddUserHandler
     {
-        private IGenericRepository<User> _user { get; } = user;
+        private readonly IGenericRepository<User> _userRepository;
+
+        public AddUserHandler(IGenericRepository<User> userRepository)
+        {
+            _userRepository = userRepository;
+        }
 
         public void Handle(AddUserCommand command)
         {
-            _user.Insert(command.Adapt<User>());
-            _user.Save();
+            var user = command.Adapt<User>();
+            _userRepository.Insert(user);
+            _userRepository.Save();
         }
     }
 }

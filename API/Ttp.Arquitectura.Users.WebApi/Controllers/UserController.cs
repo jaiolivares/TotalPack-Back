@@ -9,21 +9,24 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UserController(AddUserHandler addUserHandler) : ControllerBase
+    public class UserController(AddUserHandler addUserHandler, GetUsersHandler getUsersHandler) : ControllerBase
     {
         private readonly AddUserHandler _addUserHandler = addUserHandler;
-        private readonly GetUsersHandler _getUsersHandler;
+        private readonly GetUsersHandler _getUsersHandler = getUsersHandler;
 
         [HttpGet]
         public IActionResult Get()
         {
-            return Ok(_getUsersHandler.Handle().Adapt<List<GetUserResponse>>());
+            var users = _getUsersHandler.Handle();
+            var response = users.Adapt<List<GetUserResponse>>();
+            return Ok(response);
         }
 
         [HttpPost]
         public IActionResult Post([FromBody] AddUserRequest request)
         {
-            _addUserHandler.Handle(request.Adapt<AddUserCommand>());
+            var command = request.Adapt<AddUserCommand>();
+            _addUserHandler.Handle(command);
             return Ok();
         }
     }

@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Ttp.Arquitectura.Users.Domain\Ttp.Arquitectura.Users.Domain.csproj" />
+    <ProjectReference Include="..\Ttp.Arquitectura.Users.Repository\Ttp.Arquitectura.Users.Repository.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,15 +1,25 @@
+using Microsoft.EntityFrameworkCore;
+using Ttp.Arquitectura.Users.Application.Commands;
+using Ttp.Arquitectura.Users.Application.Queries;
+using Ttp.Arquitectura.Users.Domain.Interfaces.Repository;
+using Ttp.Arquitectura.Users.Domain;
+using Ttp.Arquitectura.Users.Repository;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
-
 builder.Services.AddControllers();
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddDbContext<UsersContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("users-db") ?? throw new InvalidOperationException("Connection string 'users-db' not encontrada.")));
+
+builder.Services.AddScoped<IGenericRepository<User>, GenericRepository<User>>();
+builder.Services.AddScoped<AddUserHandler>();
+builder.Services.AddScoped<GetUsersHandler>();
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

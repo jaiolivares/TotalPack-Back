@@ -12,13 +12,19 @@ namespace Ttp.Arquitectura.Users.Application.Queries
         public string Email { get; set; }
     }
 
-    public class GetUsersHandler(IGenericRepository<User> user)
+    public class GetUsersHandler
     {
-        private IGenericRepository<User> _user { get; } = user;
+        private readonly IGenericRepository<User> _userRepository;
+
+        public GetUsersHandler(IGenericRepository<User> userRepository)
+        {
+            _userRepository = userRepository;
+        }
 
         public List<GetUsersQuery> Handle()
         {
-            return _user.Get().ToList().Adapt<List<GetUsersQuery>>();
+            var users = _userRepository.Get().ToList();
+            return users.Adapt<List<GetUsersQuery>>();
         }
     }
 }
