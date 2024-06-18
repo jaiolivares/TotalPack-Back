@@ -1,17 +1,10 @@
 ﻿using Mapster;
 using Ttp.Arquitectura.Users.Domain.Interfaces.Repository;
 using Ttp.Arquitectura.Users.Domain;
+using Ttp.Arquitectura.Users.Application.Models;
 
 namespace Ttp.Arquitectura.Users.Application.Queries
 {
-    public class GetUsersQuery
-    {
-        public Guid Id { get; set; }
-        public string FullName { get; set; }
-        public DateTime Birth { get; set; }
-        public string Email { get; set; }
-    }
-
     public class GetUsersHandler
     {
         private readonly IGenericRepository<User> _userRepository;
@@ -25,6 +18,18 @@ namespace Ttp.Arquitectura.Users.Application.Queries
         {
             var users = _userRepository.Get().ToList();
             return users.Adapt<List<GetUsersQuery>>();
+        }
+
+        public List<GetUsersQuery> HandlePage(int pageNumber, int pageSize)
+        {
+            var users = _userRepository.GetPage(pageNumber, pageSize).ToList();
+            return users.Adapt<List<GetUsersQuery>>();
+        }
+
+        public GetUsersQuery HandleById(Guid id)
+        {
+            var user = _userRepository.GetByID(id);
+            return user.Adapt<GetUsersQuery>();
         }
     }
 }

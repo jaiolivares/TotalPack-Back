@@ -15,10 +15,7 @@ namespace Ttp.Arquitectura.Users.Repository
             this.dbSet = context.Set<TEntity>();
         }
 
-        public virtual IEnumerable<TEntity> Get(
-            Expression<Func<TEntity, bool>> filter = null,
-            Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null,
-            string includeProperties = "")
+        public virtual IEnumerable<TEntity> Get(Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
         {
             IQueryable<TEntity> query = dbSet;
 
@@ -43,7 +40,32 @@ namespace Ttp.Arquitectura.Users.Repository
             }
         }
 
-        public virtual TEntity GetByID(object id)
+        public virtual IEnumerable<TEntity> GetPage(int pageNumber, int pageSize, Expression<Func<TEntity, bool>> filter = null, Func<IQueryable<TEntity>, IOrderedQueryable<TEntity>> orderBy = null, string includeProperties = "")
+        {
+            IQueryable<TEntity> query = dbSet;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split
+                (new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+
+            if (orderBy != null)
+            {
+                return orderBy(query).ToList();
+            }
+            else
+            {
+                return query.Skip((pageNumber - 1) * pageSize).Take(pageSize).ToList();
+            }
+        }
+
+        public virtual TEntity GetByID(Guid id)
         {
             return dbSet.Find(id);
         }
