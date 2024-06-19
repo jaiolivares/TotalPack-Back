@@ -86,10 +86,56 @@ namespace Ttp.Arquitectura.Users.Repository
             context.Entry(entityToUpdate).State = EntityState.Modified;
         }
 
+        public virtual void UpdatePrincipal(int idAdress)
+        {
+            var entityToUpdate = dbSet.FirstOrDefault(e => EF.Property<int>(e, "IdAdress") == idAdress);
+            if (entityToUpdate == null)
+            {
+                return;
+                //throw new Exception($"Address with IdAdress {idAdress} not found");
+            }
+
+            // Obtener el IdUser del registro
+            var idUserPropertyInfo = entityToUpdate.GetType().GetProperty("IdUser");
+            if (idUserPropertyInfo == null || idUserPropertyInfo.PropertyType != typeof(Guid))
+            {
+                throw new Exception("The entity does not contain a property named 'IdUser' of type Guid.");
+            }
+            var idUser = (Guid)idUserPropertyInfo.GetValue(entityToUpdate);
+
+            var entitiesToUpdate = dbSet.Where(e => EF.Property<Guid>(e, "IdUser") == idUser).ToList();
+
+            foreach (var entity in entitiesToUpdate)
+            {
+                var principalPropertyInfo = entity.GetType().GetProperty("Principal");
+                if (principalPropertyInfo != null && principalPropertyInfo.PropertyType == typeof(bool))
+                {
+                    principalPropertyInfo.SetValue(entity, false);
+                }
+            }
+
+            var targetPrincipalPropertyInfo = entityToUpdate.GetType().GetProperty("Principal");
+            if (targetPrincipalPropertyInfo != null && targetPrincipalPropertyInfo.PropertyType == typeof(bool))
+            {
+                targetPrincipalPropertyInfo.SetValue(entityToUpdate, true);
+            }
+
+            Save();
+        }
+
         public virtual void Delete(Guid id)
         {
             TEntity entityToDelete = dbSet.Find(id);
             Delete(entityToDelete);
+        }
+
+        public virtual void DeleteAll(Guid id)
+        {
+            var entitiesToDelete = dbSet.Where(x => EF.Property<Guid>(x, "IdUser") == id).ToList();
+            foreach (var entityToDelete in entitiesToDelete)
+            {
+                Delete(entityToDelete);
+            }
         }
 
         public virtual void Delete(TEntity entityToDelete)

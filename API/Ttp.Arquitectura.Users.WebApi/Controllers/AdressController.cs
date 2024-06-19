@@ -12,13 +12,13 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class AdressController(IOptions<AppSettings> appSettings, AddAdressHandler addAdressHandler, GetAdressesHandler getAdressesHandler, UpdateAdressHandler updateAdressHandler)
+    public class AdressController(AddAdressHandler addAdressHandler, GetAdressesHandler getAdressesHandler, UpdateAdressHandler updateAdressHandler, DeleteAdressHandler deleteAdressHandler)
         : ControllerBase
     {
-        private readonly AppSettings _appSettings = appSettings.Value;
         private readonly AddAdressHandler _addAdressHandler = addAdressHandler;
         private readonly GetAdressesHandler _getAdressesHandler = getAdressesHandler;
         private readonly UpdateAdressHandler _updateAdressHandler = updateAdressHandler;
+        private readonly DeleteAdressHandler _deleteAdressHandler = deleteAdressHandler;
 
         //TODO: VALIDACIONES= 204, 500, 400
         //TODO: VALIDACIONES= buscar dirección antes de editar
@@ -54,6 +54,20 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
         {
             var command = request.Adapt<UpdateAdressCommand>();
             _updateAdressHandler.Handle(command);
+            return Ok();
+        }
+
+        [HttpPut("Principal")]
+        public IActionResult Put(int id)
+        {
+            _updateAdressHandler.HandlePrincipal(id);
+            return Ok();
+        }
+
+        [HttpDelete("All")]
+        public IActionResult DeleteAll(Guid idUser)
+        {
+            _deleteAdressHandler.Handle(idUser);
             return Ok();
         }
     }

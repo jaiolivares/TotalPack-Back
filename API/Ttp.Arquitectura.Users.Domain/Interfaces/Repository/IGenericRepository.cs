@@ -16,7 +16,11 @@ namespace Ttp.Arquitectura.Users.Domain.Interfaces.Repository
 
         void Update(TEntity entityToUpdate);
 
+        void UpdatePrincipal(int id);
+
         void Delete(Guid id);
+
+        void DeleteAll(Guid id);
 
         void Delete(TEntity entityToDelete);
 

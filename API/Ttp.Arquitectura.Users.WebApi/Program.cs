@@ -7,6 +7,7 @@ using Ttp.Arquitectura.Users.Repository;
 using Ttp.Arquitectura.Users.WebApi.Models.Helpers;
 
 var builder = WebApplication.CreateBuilder(args);
+string _MyCors = "MyCors";
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -25,10 +26,19 @@ builder.Services.AddScoped<IGenericRepository<Adress>, GenericRepository<Adress>
 builder.Services.AddScoped<AddAdressHandler>();
 builder.Services.AddScoped<GetAdressesHandler>();
 builder.Services.AddScoped<UpdateAdressHandler>();
+builder.Services.AddScoped<DeleteAdressHandler>();
 
 IConfigurationSection appSettingsSection = builder.Configuration.GetSection("AppSettings");
 AppSettings appSettings = appSettingsSection.Get<AppSettings>();
 builder.Services.Configure<AppSettings>(appSettingsSection);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: _MyCors, builder =>
+    {
+        builder.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost").AllowAnyHeader().AllowAnyMethod();
+    });
+});
 
 var app = builder.Build();
 
@@ -39,6 +49,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors(_MyCors);
 
 app.UseAuthorization();
 
