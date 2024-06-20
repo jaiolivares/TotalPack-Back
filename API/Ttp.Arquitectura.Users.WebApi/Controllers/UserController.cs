@@ -20,9 +20,9 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
         private readonly DeleteUserHandler _deleteUserHandler = deleteUserHandler;
         private readonly UpdateUserHandler _updateUserHandler = updateUserHandler;
 
-        //TODO: VALIDACIONES= 204, 500, 400
-        //TODO: VALIDACIONES= buscar usuario antes de eliminar o editar
-        //TOOD: VALIDACIONES= no ingresar usuarios repetidos
+        //TODO: VALIDACIONES en API= 204, 500, 400
+        //TODO: VALIDACIONES en API= buscar usuario antes de eliminar o editar
+        //TOOD: VALIDACIONES en API= no ingresar usuarios repetidos
 
         [HttpPost]
         public IActionResult Post([FromBody] AddUserRequest request)
@@ -36,7 +36,7 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
         public IActionResult Get()
         {
             var users = _getUsersHandler.Handle();
-            var response = users.Adapt<List<GetUserResponse>>();
+            var response = users.Adapt<List<GetUserResponse>>().OrderByDescending(x => x.Id).ToList();
             return Ok(response);
         }
 
@@ -44,7 +44,7 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
         public IActionResult GetPage(int pageNumber)
         {
             var users = _getUsersHandler.HandlePage(pageNumber, _appSettings.PageSize);
-            var response = users.Adapt<List<GetUserResponse>>();
+            var response = users.Adapt<List<GetUserResponse>>().OrderByDescending(x => x.Id).ToList();
             return Ok(response);
         }
 

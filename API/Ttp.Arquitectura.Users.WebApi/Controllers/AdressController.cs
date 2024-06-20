@@ -20,10 +20,10 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
         private readonly UpdateAdressHandler _updateAdressHandler = updateAdressHandler;
         private readonly DeleteAdressHandler _deleteAdressHandler = deleteAdressHandler;
 
-        //TODO: VALIDACIONES= 204, 500, 400
-        //TODO: VALIDACIONES= buscar dirección antes de editar
-        //TOOD: VALIDACIONES= no ingresar direcciones repetidas
-        //TODO: VALIDACIONES= Foreign key con usuarios
+        //TODO: VALIDACIONES en API= 204, 500, 400
+        //TODO: VALIDACIONES en API= buscar dirección antes de editar
+        //TOOD: VALIDACIONES en API= no ingresar direcciones repetidas
+        //TODO: VALIDACIONES en API= Foreign key con usuarios
 
         [HttpPost]
         public IActionResult Post([FromBody] AddAdressRequest request)
@@ -37,7 +37,7 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
         public IActionResult Get()
         {
             var adresses = _getAdressesHandler.Handle();
-            var response = adresses.Adapt<List<GetAdressResponse>>();
+            var response = adresses.Adapt<List<GetAdressResponse>>().OrderBy(x => x.Street).ToList();
             return Ok(response);
         }
 
@@ -45,7 +45,7 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
         public IActionResult GetById(Guid idUser)
         {
             var adresses = _getAdressesHandler.HandleById(idUser);
-            var response = adresses.Adapt<List<GetAdressResponse>>();
+            var response = adresses.Adapt<List<GetAdressResponse>>().OrderBy(x => x.Street).ToList();
             return Ok(response);
         }
 
