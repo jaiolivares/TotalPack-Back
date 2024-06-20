@@ -20,9 +20,15 @@ namespace Ttp.Arquitectura.Users.Application.Queries
             return adresses.Adapt<List<GetAdressesQuery>>();
         }
 
-        public GetAdressesQuery HandleById(int id)
+        public List<GetAdressesQuery> HandleById(Guid idUser)
         {
-            var adress = _adressRepository.GetByID(id);
+            var adresses = _adressRepository.GetByIdAdress(idUser);
+            return adresses.Adapt<List<GetAdressesQuery>>();
+        }
+
+        public GetAdressesQuery HandleByPrincipal(Guid idUser)
+        {
+            var adress = _adressRepository.GetByPrincipal(idUser);
             return adress.Adapt<GetAdressesQuery>();
         }
     }

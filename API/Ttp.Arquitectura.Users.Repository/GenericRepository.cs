@@ -12,7 +12,7 @@ namespace Ttp.Arquitectura.Users.Repository
         public GenericRepository(UsersContext context)
         {
             this.context = context;
-            this.dbSet = context.Set<TEntity>();
+            dbSet = context.Set<TEntity>();
         }
 
         public virtual void Insert(TEntity entity)
@@ -80,6 +80,16 @@ namespace Ttp.Arquitectura.Users.Repository
             return dbSet.Find(id);
         }
 
+        public virtual IEnumerable<TEntity> GetByIdAdress(Guid idUser)
+        {
+            return dbSet.Where(x => EF.Property<Guid>(x, "IdUser") == idUser);
+        }
+
+        public virtual TEntity GetByPrincipal(Guid idUser)
+        {
+            return dbSet.FirstOrDefault(x => EF.Property<Guid>(x, "IdUser") == idUser && EF.Property<bool>(x, "Principal"));
+        }
+
         public virtual void Update(TEntity entityToUpdate)
         {
             dbSet.Attach(entityToUpdate);
@@ -88,7 +98,7 @@ namespace Ttp.Arquitectura.Users.Repository
 
         public virtual void UpdatePrincipal(int idAdress)
         {
-            var entityToUpdate = dbSet.FirstOrDefault(e => EF.Property<int>(e, "IdAdress") == idAdress);
+            var entityToUpdate = dbSet.FirstOrDefault(x => EF.Property<int>(x, "IdAdress") == idAdress);
             if (entityToUpdate == null)
             {
                 return;

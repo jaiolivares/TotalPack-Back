@@ -14,6 +14,10 @@ namespace Ttp.Arquitectura.Users.Domain.Interfaces.Repository
 
         TEntity GetByID(int id);
 
+        IEnumerable<TEntity> GetByIdAdress(Guid idUser);
+
+        TEntity GetByPrincipal(Guid idUser);
+
         void Update(TEntity entityToUpdate);
 
         void UpdatePrincipal(int id);

@@ -42,9 +42,17 @@ namespace Ttp.Arquitectura.Users.WebApi.Controllers
         }
 
         [HttpGet("ById")]
-        public IActionResult GetById(int id)
+        public IActionResult GetById(Guid idUser)
         {
-            var adress = _getAdressesHandler.HandleById(id);
+            var adresses = _getAdressesHandler.HandleById(idUser);
+            var response = adresses.Adapt<List<GetAdressResponse>>();
+            return Ok(response);
+        }
+
+        [HttpGet("ByPrincipal")]
+        public IActionResult GetByPrincipal(Guid idUser)
+        {
+            var adress = _getAdressesHandler.HandleByPrincipal(idUser);
             var response = adress.Adapt<GetAdressResponse>();
             return Ok(response);
         }
